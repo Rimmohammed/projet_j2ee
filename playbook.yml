@@ -1,0 +1,16 @@
+---
+ - hosts: docker
+   become: true
+   tasks:
+    - name: stop previous version docker
+      shell: docker stop valaxy
+      ignore_errors: yes
+    - name: remove stopped container
+      shell: docker rm -f valaxy
+      ignore_errors: yes
+    - name: remove docker images
+      shell: docker image rmi -f thamer11/valaxy
+      ignore_errors: yes
+    - name: create docker image
+      shell: docker run -d --name valaxy -p 8090:8080 thamer11/valaxy:${DOCKER_TAG}
+

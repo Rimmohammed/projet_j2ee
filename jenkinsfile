@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    stages {
+        stage ('git'){
+            steps{
+                git credentialsId: 'ansadmin', url: 'git@gitlab.com:Kouas.Thamer/projet_j2ee.git'
+            }
+        }  
+        stage ('build') {
+           steps{
+                sh 'mvn clean install package'
+           }
+        }
+        stage ('ansible') {
+            steps{
+             sh 'ansible-playbook /opt/playbook/kubernetes.yml'
+            }
+        }
+
+    }
+}
